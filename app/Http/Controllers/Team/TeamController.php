@@ -3,10 +3,7 @@
 namespace App\Http\Controllers\Team;
 
 use App\Actions\Teams\CreateTeam;
-use App\Actions\Teams\DeleteTeam;
-use App\Actions\Teams\UpdateTeam;
 use App\Http\Controllers\Controller;
-use App\Models\Team;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 

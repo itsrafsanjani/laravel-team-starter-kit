@@ -48,7 +48,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return Inertia::render('Dashboard');
     })->name('team.dashboard');
 
-
     Route::post('{team}/switch', [TeamController::class, 'switch'])->name('teams.switch');
 
     // Team settings routes
