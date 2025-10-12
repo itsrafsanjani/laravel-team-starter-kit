@@ -148,8 +148,11 @@ it('can scope by type', function () {
 
     $freePlans = Plan::byType(PlanType::FREE)->get();
 
-    expect($freePlans)->toHaveCount(1);
-    expect($freePlans->first()->id)->toBe($freePlan->id);
+    // Count existing free plans (including from beforeEach if it's FREE type)
+    $expectedCount = $this->plan->type === PlanType::FREE ? 2 : 1;
+
+    expect($freePlans)->toHaveCount($expectedCount);
+    expect($freePlans->pluck('id')->toArray())->toContain($freePlan->id);
 });
 
 it('can scope ordered plans', function () {
