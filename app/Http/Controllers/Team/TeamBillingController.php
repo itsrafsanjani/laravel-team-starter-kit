@@ -14,7 +14,7 @@ class TeamBillingController extends Controller
 
     public function index(Request $request)
     {
-        $team = $request->attributes->get('team');
+        $team = team();
         $this->authorize('viewBilling', $team);
 
         $activePlan = $team->getActivePlan();
@@ -29,7 +29,7 @@ class TeamBillingController extends Controller
 
     public function plans(Request $request)
     {
-        $team = $request->attributes->get('team');
+        $team = team();
         $this->authorize('viewBilling', $team);
 
         $plans = Plan::availableForNewCustomers()->get();
@@ -42,7 +42,7 @@ class TeamBillingController extends Controller
 
     public function updateBillingSettings(Request $request)
     {
-        $team = $request->attributes->get('team');
+        $team = team();
         $this->authorize('manageBilling', $team);
 
         $request->validate([
@@ -72,7 +72,7 @@ class TeamBillingController extends Controller
 
     public function updateBillingAddress(Request $request)
     {
-        $team = $request->attributes->get('team');
+        $team = team();
         $this->authorize('manageBilling', $team);
 
         $request->validate([
@@ -109,7 +109,7 @@ class TeamBillingController extends Controller
 
     public function checkout(Request $request)
     {
-        $team = $request->attributes->get('team');
+        $team = team();
         $this->authorize('manageBilling', $team);
 
         $validated = $request->validate([
@@ -148,7 +148,7 @@ class TeamBillingController extends Controller
 
     public function billingPortal(Request $request)
     {
-        $team = $request->attributes->get('team');
+        $team = team();
         $this->authorize('manageBilling', $team);
 
         return $team->redirectToBillingPortal(route('team.settings.billing', $team));

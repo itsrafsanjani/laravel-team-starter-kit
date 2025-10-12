@@ -37,7 +37,8 @@
             "Database\\Seeders\\": "database/seeders/"
         },
         "files": [
-            "app/Helpers/RolePermissionHelper.php"
+            "app/Helpers/RolePermissionHelper.php",
+            "app/helpers.php"
         ]
     },
     "autoload-dev": {

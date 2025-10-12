@@ -34,12 +34,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     // Team management routes
-    Route::get('teams', [TeamController::class, 'index'])->name('teams.index');
     Route::get('teams/create', [TeamController::class, 'create'])->name('teams.create');
     Route::post('teams', [TeamController::class, 'store'])->name('teams.store');
-    Route::put('teams/{team}', [TeamController::class, 'update'])->name('teams.update');
-    Route::delete('teams/{team}', [TeamController::class, 'destroy'])->name('teams.destroy');
-    Route::post('teams/{team}/switch', [TeamController::class, 'switch'])->name('teams.switch');
 
     // Team invitation routes (for authenticated users)
     Route::post('invite/{invitation}/accept', [TeamInvitationController::class, 'accept'])->name('team-invitations.accept');
@@ -47,10 +43,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 // Team-aware routes (with slug prefix)
-Route::middleware(['auth', 'verified', 'team', 'resolve.team'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('{team}/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('team.dashboard');
+
+
+    Route::post('{team}/switch', [TeamController::class, 'switch'])->name('teams.switch');
 
     // Team settings routes
     Route::get('{team}/settings/general', [TeamSettingsController::class, 'generalSettings'])->name('team.settings.general');

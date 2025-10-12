@@ -18,7 +18,7 @@ class TeamMemberController extends Controller
 
     public function index(Request $request)
     {
-        $team = $request->attributes->get('team');
+        $team = team();
         $this->authorize('manageMembers', $team);
 
         $roles = config('roles.roles', []);
@@ -78,7 +78,7 @@ class TeamMemberController extends Controller
 
     public function invite(Request $request, InviteTeamMember $inviteTeamMember)
     {
-        $team = $request->attributes->get('team');
+        $team = team();
         $this->authorize('inviteMembers', $team);
 
         $availableRoles = array_keys(config('roles.roles'));
@@ -101,7 +101,7 @@ class TeamMemberController extends Controller
 
     public function remove(Request $request, $team, User $user, RemoveTeamMember $removeTeamMember)
     {
-        $team = $request->attributes->get('team');
+        $team = team();
         $this->authorize('removeMembers', $team);
 
         try {
@@ -117,7 +117,7 @@ class TeamMemberController extends Controller
 
     public function updateRole(Request $request, $team, $user, UpdateTeamMemberRole $updateTeamMemberRole)
     {
-        $team = $request->attributes->get('team');
+        $team = team();
         $this->authorize('manageMembers', $team);
 
         // Resolve the user if it's an ID
@@ -144,7 +144,7 @@ class TeamMemberController extends Controller
 
     public function removeInvitation(Request $request, $team, TeamInvitation $invitation)
     {
-        $team = $request->attributes->get('team');
+        $team = team();
         $this->authorize('manageMembers', $team);
 
         if (! $invitation) {

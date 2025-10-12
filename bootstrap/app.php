@@ -3,8 +3,6 @@
 use App\Http\Middleware\CheckBannedUser;
 use App\Http\Middleware\HandleAppearance;
 use App\Http\Middleware\HandleInertiaRequests;
-use App\Http\Middleware\ResolveTeam;
-use App\Http\Middleware\SetTeamContext;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -24,11 +22,6 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleAppearance::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
-        ]);
-
-        $middleware->alias([
-            'team' => SetTeamContext::class,
-            'resolve.team' => ResolveTeam::class,
         ]);
 
         $middleware->validateCsrfTokens(except: [

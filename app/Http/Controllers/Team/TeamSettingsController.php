@@ -14,7 +14,7 @@ class TeamSettingsController extends Controller
 
     public function generalSettings(Request $request)
     {
-        $team = $request->attributes->get('team');
+        $team = team();
         $this->authorize('view', $team);
 
         $user = $request->user();
@@ -31,7 +31,7 @@ class TeamSettingsController extends Controller
 
     public function updateGeneralSettings(Request $request, UpdateTeam $updateTeam)
     {
-        $team = $request->attributes->get('team');
+        $team = team();
         $this->authorize('update', $team);
 
         $request->validate([
@@ -48,7 +48,7 @@ class TeamSettingsController extends Controller
 
     public function deleteTeam(Request $request)
     {
-        $team = $request->attributes->get('team');
+        $team = team();
         $this->authorize('delete', $team);
 
         $request->validate([

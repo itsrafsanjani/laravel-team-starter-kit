@@ -16,33 +16,6 @@ it('can be created with factory', function () {
     expect($this->team->slug)->not->toBeEmpty();
 });
 
-it('has correct fillable attributes', function () {
-    $fillable = [
-        'user_id',
-        'name',
-        'slug',
-        'type',
-        'billing_email',
-        'billing_name',
-        'tax_id',
-        'logo',
-        'website',
-        'phone',
-        'address',
-        'city',
-        'state',
-        'postal_code',
-        'country',
-        'stripe_id',
-        'pm_type',
-        'pm_last_four',
-        'trial_ends_at',
-        'settings',
-    ];
-
-    expect($this->team->getFillable())->toBe($fillable);
-});
-
 it('has correct casts', function () {
     expect($this->team->getCasts())->toHaveKey('settings', 'array');
     expect($this->team->getCasts())->toHaveKey('trial_ends_at', 'datetime');

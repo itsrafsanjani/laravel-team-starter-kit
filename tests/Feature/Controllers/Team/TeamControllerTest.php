@@ -73,73 +73,6 @@ it('validates email format for billing email', function () {
     $response->assertSessionHasErrors(['billing_email']);
 });
 
-it('can update team', function () {
-    $team = Team::factory()->create(['user_id' => $this->user->id]);
-
-    $updateData = [
-        'name' => 'Updated Team Name',
-        'type' => 'company',
-        'website' => 'https://example.com',
-        'phone' => '+1234567890',
-        'address' => '123 Main St',
-        'city' => 'New York',
-        'state' => 'NY',
-        'postal_code' => '10001',
-        'country' => 'US',
-    ];
-
-    $response = $this->put(route('teams.update', $team), $updateData);
-
-    $team->refresh();
-    expect($team->name)->toBe('Updated Team Name');
-    expect($team->type)->toBe('company');
-
-    $response->assertRedirect(route('team.settings.general', $team));
-    $response->assertSessionHas('success', 'Team updated successfully.');
-});
-
-it('validates required fields for team update', function () {
-    $team = Team::factory()->create(['user_id' => $this->user->id]);
-
-    $response = $this->put(route('teams.update', $team), []);
-
-    $response->assertSessionHasErrors(['name', 'type']);
-});
-
-it('validates team type', function () {
-    $team = Team::factory()->create(['user_id' => $this->user->id]);
-
-    $response = $this->put(route('teams.update', $team), [
-        'name' => 'Test Team',
-        'type' => 'invalid-type',
-    ]);
-
-    $response->assertSessionHasErrors(['type']);
-});
-
-it('validates website url format', function () {
-    $team = Team::factory()->create(['user_id' => $this->user->id]);
-
-    $response = $this->put(route('teams.update', $team), [
-        'name' => 'Test Team',
-        'type' => 'company',
-        'website' => 'invalid-url',
-    ]);
-
-    $response->assertSessionHasErrors(['website']);
-});
-
-it('can delete team', function () {
-    $team = Team::factory()->create(['user_id' => $this->user->id]);
-
-    $response = $this->delete(route('teams.destroy', $team));
-
-    expect(Team::find($team->id))->toBeNull();
-
-    $response->assertRedirect(route('teams.index'));
-    $response->assertSessionHas('success', 'Team deleted successfully.');
-});
-
 it('can switch to team', function () {
     $team = Team::factory()->create();
     $team->users()->attach($this->user->id, ['role' => 'member', 'joined_at' => now()]);
@@ -165,25 +98,4 @@ it('denies access to unauthenticated users', function () {
     $response = $this->get(route('teams.create'));
 
     $response->assertRedirect(route('login'));
-});
-
-it('denies access to team update for non-owners', function () {
-    $team = Team::factory()->create();
-    $team->users()->attach($this->user->id, ['role' => 'member', 'joined_at' => now()]);
-
-    $response = $this->put(route('teams.update', $team), [
-        'name' => 'Updated Name',
-        'type' => 'company',
-    ]);
-
-    $response->assertStatus(403);
-});
-
-it('denies access to team deletion for non-owners', function () {
-    $team = Team::factory()->create();
-    $team->users()->attach($this->user->id, ['role' => 'member', 'joined_at' => now()]);
-
-    $response = $this->delete(route('teams.destroy', $team));
-
-    $response->assertStatus(403);
 });
