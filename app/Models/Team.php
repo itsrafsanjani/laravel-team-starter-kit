@@ -22,6 +22,7 @@ class Team extends Model
         'name',
         'slug',
         'type',
+        'description',
         'billing_email',
         'billing_name',
         'tax_id',

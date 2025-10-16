@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Facades\TeamContext;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -36,22 +35,63 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        // Resolve team context using the facade
-        $teamContext = TeamContext::resolve($request);
+        $user = $request->user();
+        $currentTeam = team();
 
-        // Get all team context data
-        $contextData = $teamContext->getInertiaData();
+        // Get user teams data
+        $userTeams = [];
+        $currentTeamData = null;
+        $permissions = [];
+
+        if ($user) {
+            $userTeams = $user->teams()->get()->map(function ($team) {
+                return [
+                    'id' => $team->id,
+                    'name' => $team->name,
+                    'slug' => $team->slug,
+                    'type' => $team->type,
+                    'logo' => $team->logo,
+                ];
+            })->toArray();
+
+            if ($currentTeam) {
+                $currentTeamData = [
+                    'id' => $currentTeam->id,
+                    'name' => $currentTeam->name,
+                    'slug' => $currentTeam->slug,
+                    'type' => $currentTeam->type,
+                    'logo' => $currentTeam->logo,
+                ];
+
+                // Get permissions for current team
+                $rolePermissionService = app(\App\Services\RolePermissionService::class);
+                $permissions = $rolePermissionService->getUserTeamPermissions($user, $currentTeam);
+            }
+        }
 
         // Add admin permissions if user is on admin routes
         $adminPermissions = null;
-        if ($request->is('admin*') && $request->user()) {
-            $adminPermissions = $this->getUserAdminPermissions($request->user());
+        if ($request->is('admin*') && $user) {
+            $adminPermissions = $this->getUserAdminPermissions($user);
         }
 
         return [
             ...parent::share($request),
             'name' => config('app.name'),
-            ...$contextData,
+            'auth' => [
+                'user' => $user ? [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'email_verified_at' => $user->email_verified_at,
+                    'avatar' => $user->avatar,
+                    'created_at' => $user->created_at,
+                    'updated_at' => $user->updated_at,
+                ] : null,
+            ],
+            'currentTeam' => $currentTeamData,
+            'teams' => $userTeams,
+            'permissions' => $permissions,
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'flash' => [
                 'success' => $request->session()->get('success'),

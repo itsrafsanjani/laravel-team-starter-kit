@@ -20,37 +20,37 @@ class PlanFactory extends Factory
      */
     public function definition(): array
     {
-        $name = $this->faker->words(2, true);
+        $name = fake()->words(2, true);
         $slug = str($name)->slug();
 
         return [
             'name' => ucwords($name),
             'slug' => $slug,
-            'description' => $this->faker->sentence(),
-            'type' => $this->faker->randomElement(PlanType::cases()),
-            'monthly_price' => $this->faker->randomFloat(2, 9.99, 99.99),
-            'yearly_price' => $this->faker->randomFloat(2, 99.99, 999.99),
-            'lifetime_price' => $this->faker->randomFloat(2, 199.99, 1999.99),
-            'stripe_monthly_price_id' => 'price_'.$this->faker->uuid(),
-            'stripe_yearly_price_id' => 'price_'.$this->faker->uuid(),
-            'stripe_lifetime_price_id' => 'price_'.$this->faker->uuid(),
-            'trial_days' => $this->faker->numberBetween(0, 30),
-            'features' => $this->faker->words($this->faker->numberBetween(3, 8)),
+            'description' => fake()->sentence(),
+            'type' => fake()->randomElement(PlanType::cases()),
+            'monthly_price' => fake()->randomFloat(2, 9.99, 99.99),
+            'yearly_price' => fake()->randomFloat(2, 99.99, 999.99),
+            'lifetime_price' => fake()->randomFloat(2, 199.99, 1999.99),
+            'stripe_monthly_price_id' => 'price_'.fake()->uuid(),
+            'stripe_yearly_price_id' => 'price_'.fake()->uuid(),
+            'stripe_lifetime_price_id' => 'price_'.fake()->uuid(),
+            'trial_days' => fake()->numberBetween(0, 30),
+            'features' => fake()->words(fake()->numberBetween(3, 8)),
             'permissions' => [
-                'max_team_members' => $this->faker->numberBetween(1, 100),
-                'max_projects' => $this->faker->numberBetween(1, 50),
-                'max_storage_gb' => $this->faker->numberBetween(1, 1000),
-                'emails_per_month' => $this->faker->numberBetween(100, 100000),
-                'api_calls_per_month' => $this->faker->numberBetween(1000, 1000000),
-                'advanced_analytics' => $this->faker->boolean(),
-                'api_access' => $this->faker->boolean(),
-                'white_label' => $this->faker->boolean(),
-                'priority_support' => $this->faker->boolean(),
+                'max_team_members' => fake()->numberBetween(1, 100),
+                'max_projects' => fake()->numberBetween(1, 50),
+                'max_storage_gb' => fake()->numberBetween(1, 1000),
+                'emails_per_month' => fake()->numberBetween(100, 100000),
+                'api_calls_per_month' => fake()->numberBetween(1000, 1000000),
+                'advanced_analytics' => fake()->boolean(),
+                'api_access' => fake()->boolean(),
+                'white_label' => fake()->boolean(),
+                'priority_support' => fake()->boolean(),
             ],
-            'is_active' => $this->faker->boolean(80), // 80% chance of being active
-            'is_popular' => $this->faker->boolean(20), // 20% chance of being popular
-            'is_legacy' => $this->faker->boolean(10), // 10% chance of being legacy
-            'sort_order' => $this->faker->numberBetween(0, 100),
+            'is_active' => fake()->boolean(80), // 80% chance of being active
+            'is_popular' => fake()->boolean(20), // 20% chance of being popular
+            'is_legacy' => fake()->boolean(10), // 10% chance of being legacy
+            'sort_order' => fake()->numberBetween(0, 100),
         ];
     }
 
@@ -78,7 +78,7 @@ class PlanFactory extends Factory
             'monthly_price' => null,
             'yearly_price' => null,
             'lifetime_price' => null,
-            'trial_days' => $this->faker->numberBetween(7, 30),
+            'trial_days' => fake()->numberBetween(7, 30),
         ]);
     }
 

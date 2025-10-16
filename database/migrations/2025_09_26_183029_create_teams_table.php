@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('billing_name')->nullable();
             $table->string('tax_id')->nullable();
             $table->string('logo')->nullable();
+            $table->string('description')->nullable();
             $table->string('website')->nullable();
             $table->string('phone')->nullable();
             $table->string('address')->nullable();

@@ -24,9 +24,9 @@ class UserAdminRoleFactory extends Factory
         return [
             'user_id' => User::factory(),
             'admin_role_id' => AdminRole::factory(),
-            'is_active' => $this->faker->boolean(80), // 80% chance of being active
-            'assigned_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
-            'expires_at' => $this->faker->optional(0.3)->dateTimeBetween('now', '+1 year'),
+            'is_active' => fake()->boolean(80), // 80% chance of being active
+            'assigned_at' => fake()->dateTimeBetween('-1 year', 'now'),
+            'expires_at' => fake()->optional(0.3)->dateTimeBetween('now', '+1 year'),
         ];
     }
 
@@ -58,7 +58,7 @@ class UserAdminRoleFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'is_active' => true,
-            'expires_at' => $this->faker->dateTimeBetween('-1 year', '-1 day'),
+            'expires_at' => fake()->dateTimeBetween('-1 year', '-1 day'),
         ]);
     }
 }

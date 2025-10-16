@@ -2,14 +2,12 @@
 
 A modern Laravel 12 starter kit with team and billing support, built with Inertia.js, React, and Tailwind CSS.
 
-https://github.com/user-attachments/assets/b77a802d-6d96-40d5-8969-102d3863a0a4
-
 ## Quick Start
 
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/weDevsOfficial/laravel-react-starter-kit.git your-project-name
+git clone https://github.com/itsrafsanjani/laravel-team-starter-kit.git your-project-name
 cd your-project-name
 ```
 
