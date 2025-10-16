@@ -43,34 +43,34 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 // Team-aware routes (with slug prefix)
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('{team}/dashboard', function () {
+Route::middleware(['auth', 'verified'])->prefix('{team}')->group(function () {
+    Route::get('dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('team.dashboard');
 
-    Route::post('{team}/switch', [TeamController::class, 'switch'])->name('teams.switch');
+    Route::post('switch', [TeamController::class, 'switch'])->name('teams.switch');
 
     // Team settings routes
-    Route::get('{team}/settings/general', [TeamSettingsController::class, 'generalSettings'])->name('team.settings.general');
-    Route::post('{team}/settings/general', [TeamSettingsController::class, 'updateGeneralSettings'])->name('team.settings.general.update');
-    Route::delete('{team}/settings/general', [TeamSettingsController::class, 'deleteTeam'])->name('team.settings.general.delete');
-    Route::get('{team}/settings/members', [TeamMemberController::class, 'index'])->name('team.settings.members');
+    Route::get('settings/general', [TeamSettingsController::class, 'generalSettings'])->name('team.settings.general');
+    Route::post('settings/general', [TeamSettingsController::class, 'updateGeneralSettings'])->name('team.settings.general.update');
+    Route::delete('settings/general', [TeamSettingsController::class, 'deleteTeam'])->name('team.settings.general.delete');
+    Route::get('settings/members', [TeamMemberController::class, 'index'])->name('team.settings.members');
 
     // Team member management routes
-    Route::get('{team}/members', [TeamMemberController::class, 'index'])->name('teams.members.index');
-    Route::post('{team}/members/invite', [TeamMemberController::class, 'invite'])->name('teams.members.invite');
-    Route::put('{team}/members/{user}/role', [TeamMemberController::class, 'updateRole'])->name('teams.members.update-role');
-    Route::delete('{team}/members/{user}', [TeamMemberController::class, 'remove'])->name('teams.members.remove');
-    Route::delete('{team}/invitations/{invitation}', [TeamMemberController::class, 'removeInvitation'])->name('teams.invitations.remove');
+    Route::get('members', [TeamMemberController::class, 'index'])->name('teams.members.index');
+    Route::post('members/invite', [TeamMemberController::class, 'invite'])->name('teams.members.invite');
+    Route::put('members/{user}/role', [TeamMemberController::class, 'updateRole'])->name('teams.members.update-role');
+    Route::delete('members/{user}', [TeamMemberController::class, 'remove'])->name('teams.members.remove');
+    Route::delete('invitations/{invitation}', [TeamMemberController::class, 'removeInvitation'])->name('teams.invitations.remove');
 
     // Team billing routes
 
-    Route::get('{team}/settings/billing', [TeamBillingController::class, 'index'])->name('team.settings.billing');
-    Route::get('{team}/settings/billing/plans', [TeamBillingController::class, 'plans'])->name('team.settings.billing.plans');
-    Route::post('{team}/settings/billing', [TeamBillingController::class, 'updateBillingSettings'])->name('team.settings.billing.update');
-    Route::post('{team}/settings/billing/address', [TeamBillingController::class, 'updateBillingAddress'])->name('team.settings.billing.address.update');
-    Route::post('{team}/settings/billing/checkout', [TeamBillingController::class, 'checkout'])->name('team.settings.billing.checkout');
-    Route::get('{team}/settings/billing/portal', [TeamBillingController::class, 'billingPortal'])->name('team.settings.billing.portal');
+    Route::get('settings/billing', [TeamBillingController::class, 'index'])->name('team.settings.billing');
+    Route::get('settings/billing/plans', [TeamBillingController::class, 'plans'])->name('team.settings.billing.plans');
+    Route::post('settings/billing', [TeamBillingController::class, 'updateBillingSettings'])->name('team.settings.billing.update');
+    Route::post('settings/billing/address', [TeamBillingController::class, 'updateBillingAddress'])->name('team.settings.billing.address.update');
+    Route::post('settings/billing/checkout', [TeamBillingController::class, 'checkout'])->name('team.settings.billing.checkout');
+    Route::get('settings/billing/portal', [TeamBillingController::class, 'billingPortal'])->name('team.settings.billing.portal');
 });
 
 require __DIR__.'/settings.php';
