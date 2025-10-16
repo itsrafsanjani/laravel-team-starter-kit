@@ -3,13 +3,11 @@
         "claude_code",
         "codex",
         "copilot",
-        "cursor",
-        "phpstorm"
+        "cursor"
     ],
     "editors": [
         "claude_code",
         "cursor",
-        "phpstorm",
         "vscode"
     ],
     "guidelines": []
