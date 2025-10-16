@@ -62,7 +62,7 @@ it('can check if free plan', function () {
 
 it('can check if trial plan', function () {
     $trialPlan = Plan::factory()->create(['type' => PlanType::TRIAL]);
-    $paidPlan  = Plan::factory()->create(['type' => PlanType::SUBSCRIPTION]);
+    $paidPlan = Plan::factory()->create(['type' => PlanType::SUBSCRIPTION]);
 
     expect($trialPlan->isTrial())->toBeTrue();
     expect($paidPlan->isTrial())->toBeFalse();
@@ -70,14 +70,14 @@ it('can check if trial plan', function () {
 
 it('can check if subscription plan', function () {
     $subscriptionPlan = Plan::factory()->create(['type' => PlanType::SUBSCRIPTION]);
-    $freePlan         = Plan::factory()->create(['type' => PlanType::FREE]);
+    $freePlan = Plan::factory()->create(['type' => PlanType::FREE]);
 
     expect($subscriptionPlan->isSubscription())->toBeTrue();
     expect($freePlan->isSubscription())->toBeFalse();
 });
 
 it('can check if lifetime plan', function () {
-    $lifetimePlan     = Plan::factory()->create(['type' => PlanType::LIFETIME]);
+    $lifetimePlan = Plan::factory()->create(['type' => PlanType::LIFETIME]);
     $subscriptionPlan = Plan::factory()->create(['type' => PlanType::SUBSCRIPTION]);
 
     expect($lifetimePlan->isLifetime())->toBeTrue();
@@ -85,7 +85,7 @@ it('can check if lifetime plan', function () {
 });
 
 it('can check if has trial', function () {
-    $planWithTrial    = Plan::factory()->create(['trial_days' => 14]);
+    $planWithTrial = Plan::factory()->create(['trial_days' => 14]);
     $planWithoutTrial = Plan::factory()->create(['trial_days' => 0]);
 
     expect($planWithTrial->hasTrial())->toBeTrue();
@@ -94,8 +94,8 @@ it('can check if has trial', function () {
 
 it('can get price for cycle', function () {
     $plan = Plan::factory()->create([
-        'monthly_price'  => 10.00,
-        'yearly_price'   => 100.00,
+        'monthly_price' => 10.00,
+        'yearly_price' => 100.00,
         'lifetime_price' => 500.00,
     ]);
 
@@ -107,8 +107,8 @@ it('can get price for cycle', function () {
 
 it('can get stripe price id for cycle', function () {
     $plan = Plan::factory()->create([
-        'stripe_monthly_price_id'  => 'price_monthly',
-        'stripe_yearly_price_id'   => 'price_yearly',
+        'stripe_monthly_price_id' => 'price_monthly',
+        'stripe_yearly_price_id' => 'price_yearly',
         'stripe_lifetime_price_id' => 'price_lifetime',
     ]);
 
@@ -120,8 +120,8 @@ it('can get stripe price id for cycle', function () {
 
 it('can get cycle for price id', function () {
     $plan = Plan::factory()->create([
-        'stripe_monthly_price_id'  => 'price_monthly',
-        'stripe_yearly_price_id'   => 'price_yearly',
+        'stripe_monthly_price_id' => 'price_monthly',
+        'stripe_yearly_price_id' => 'price_yearly',
         'stripe_lifetime_price_id' => 'price_lifetime',
     ]);
 
@@ -132,7 +132,7 @@ it('can get cycle for price id', function () {
 });
 
 it('can scope active plans', function () {
-    $activePlan   = Plan::factory()->create(['is_active' => true]);
+    $activePlan = Plan::factory()->create(['is_active' => true]);
     $inactivePlan = Plan::factory()->create(['is_active' => false]);
 
     $activePlans = Plan::active()->get();
@@ -143,7 +143,7 @@ it('can scope active plans', function () {
 });
 
 it('can scope by type', function () {
-    $freePlan         = Plan::factory()->create(['type' => PlanType::FREE]);
+    $freePlan = Plan::factory()->create(['type' => PlanType::FREE]);
     $subscriptionPlan = Plan::factory()->create(['type' => PlanType::SUBSCRIPTION]);
 
     $freePlans = Plan::byType(PlanType::FREE)->get();
@@ -189,7 +189,7 @@ it('can get permission value', function () {
 });
 
 it('can check if legacy', function () {
-    $legacyPlan  = Plan::factory()->create(['is_legacy' => true]);
+    $legacyPlan = Plan::factory()->create(['is_legacy' => true]);
     $currentPlan = Plan::factory()->create(['is_legacy' => false]);
 
     expect($legacyPlan->isLegacy())->toBeTrue();
@@ -197,8 +197,8 @@ it('can check if legacy', function () {
 });
 
 it('can scope current plans', function () {
-    $currentPlan  = Plan::factory()->create(['is_legacy' => false, 'is_active' => true]);
-    $legacyPlan   = Plan::factory()->create(['is_legacy' => true, 'is_active' => true]);
+    $currentPlan = Plan::factory()->create(['is_legacy' => false, 'is_active' => true]);
+    $legacyPlan = Plan::factory()->create(['is_legacy' => true, 'is_active' => true]);
     $inactivePlan = Plan::factory()->create(['is_legacy' => false, 'is_active' => false]);
 
     $currentPlans = Plan::current()->get();
@@ -210,7 +210,7 @@ it('can scope current plans', function () {
 
 it('can scope legacy plans', function () {
     $currentPlan = Plan::factory()->create(['is_legacy' => false]);
-    $legacyPlan  = Plan::factory()->create(['is_legacy' => true]);
+    $legacyPlan = Plan::factory()->create(['is_legacy' => true]);
 
     $legacyPlans = Plan::legacy()->get();
 
@@ -220,8 +220,8 @@ it('can scope legacy plans', function () {
 
 it('can scope available for new customers', function () {
     $availablePlan = Plan::factory()->create(['is_legacy' => false, 'is_active' => true]);
-    $legacyPlan    = Plan::factory()->create(['is_legacy' => true, 'is_active' => true]);
-    $inactivePlan  = Plan::factory()->create(['is_legacy' => false, 'is_active' => false]);
+    $legacyPlan = Plan::factory()->create(['is_legacy' => true, 'is_active' => true]);
+    $inactivePlan = Plan::factory()->create(['is_legacy' => false, 'is_active' => false]);
 
     $availablePlans = Plan::availableForNewCustomers()->get();
 
