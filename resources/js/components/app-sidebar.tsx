@@ -45,7 +45,7 @@ export function AppSidebar() {
           ? [
               {
                 title: 'Team Settings',
-                href: team.settings.general({ team: currentTeam.slug }),
+                href: team.settings.general.index({ team: currentTeam.slug }),
                 icon: Settings,
               },
             ]

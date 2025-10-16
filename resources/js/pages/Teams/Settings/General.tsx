@@ -37,11 +37,9 @@ interface Props {
 
 export default function TeamGeneralSettings({
   team,
-  userRole,
   canDelete,
   isOnlyTeam,
 }: Props) {
-  const [deletePassword, setDeletePassword] = useState('');
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [showSlugField, setShowSlugField] = useState(false);
   const [isCropperOpen, setIsCropperOpen] = useState(false);
@@ -83,14 +81,13 @@ export default function TeamGeneralSettings({
   };
 
   const handleDelete = () => {
-    deleteForm.post(
-      teamRoutes.settings.general.delete({ team: team.slug }).url,
-      {
-        onSuccess: () => {
-          router.visit(teamRoutes.settings.general({ team: team.slug }).url);
-        },
+    deleteForm.post(teamRoutes.delete({ team: team.slug }).url, {
+      onSuccess: () => {
+        router.visit(
+          teamRoutes.settings.general.index({ team: team.slug }).url,
+        );
       },
-    );
+    });
   };
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {

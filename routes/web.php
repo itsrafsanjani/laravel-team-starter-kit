@@ -1,9 +1,10 @@
 <?php
 
+use App\Http\Controllers\Team\GeneralSettingController;
 use App\Http\Controllers\Team\TeamBillingController;
 use App\Http\Controllers\Team\TeamController;
 use App\Http\Controllers\Team\TeamInvitationController;
-use App\Http\Controllers\Team\TeamMemberController;
+use App\Http\Controllers\Team\MemberController;
 use App\Http\Controllers\Team\TeamSettingsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -51,17 +52,18 @@ Route::middleware(['auth', 'verified'])->prefix('{team}')->group(function () {
     Route::post('switch', [TeamController::class, 'switch'])->name('teams.switch');
 
     // Team settings routes
-    Route::get('settings/general', [TeamSettingsController::class, 'generalSettings'])->name('team.settings.general');
-    Route::post('settings/general', [TeamSettingsController::class, 'updateGeneralSettings'])->name('team.settings.general.update');
-    Route::delete('settings/general', [TeamSettingsController::class, 'deleteTeam'])->name('team.settings.general.delete');
-    Route::get('settings/members', [TeamMemberController::class, 'index'])->name('team.settings.members');
+    Route::get('settings/general', [GeneralSettingController::class, 'index'])->name('team.settings.general.index');
+    Route::post('settings/general', [GeneralSettingController::class, 'update'])->name('team.settings.general.update');
+
+    Route::delete('/', [TeamController::class, 'delete'])->name('team.delete');
 
     // Team member management routes
-    Route::get('members', [TeamMemberController::class, 'index'])->name('teams.members.index');
-    Route::post('members/invite', [TeamMemberController::class, 'invite'])->name('teams.members.invite');
-    Route::put('members/{user}/role', [TeamMemberController::class, 'updateRole'])->name('teams.members.update-role');
-    Route::delete('members/{user}', [TeamMemberController::class, 'remove'])->name('teams.members.remove');
-    Route::delete('invitations/{invitation}', [TeamMemberController::class, 'removeInvitation'])->name('teams.invitations.remove');
+    Route::get('settings/members', [MemberController::class, 'index'])->name('team.settings.members.index');
+    Route::delete('settings/members/{user}', [MemberController::class, 'destroy'])->name('teams.settings.members.destroy');
+
+    Route::post('members/invite', [MemberController::class, 'invite'])->name('teams.members.invite');
+    Route::put('members/{user}/role', [MemberController::class, 'updateRole'])->name('teams.members.update-role');
+    Route::delete('invitations/{invitation}', [MemberController::class, 'removeInvitation'])->name('teams.invitations.remove');
 
     // Team billing routes
 

@@ -256,7 +256,7 @@ export default function TeamMembersSettings({
   const confirmRemoveMember = () => {
     if (memberDeleteDialog.userId) {
       deleteMember(
-        teams.members.remove({
+        teams.settings.members.destroy({
           team: team.slug,
           user: memberDeleteDialog.userId,
         }).url,

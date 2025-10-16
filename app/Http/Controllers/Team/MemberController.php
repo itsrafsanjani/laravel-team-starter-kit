@@ -10,16 +10,15 @@ use App\Models\TeamInvitation;
 use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
-class TeamMemberController extends Controller
+class MemberController extends Controller
 {
-    use AuthorizesRequests;
-
     public function index(Request $request)
     {
         $team = team();
-        $this->authorize('manageMembers', $team);
+        Gate::authorize('manageMembers', $team);
 
         $roles = config('roles.roles', []);
         $availableRoles = [];
@@ -76,10 +75,26 @@ class TeamMemberController extends Controller
         ]);
     }
 
+    public function destroy(Request $request, $team, User $user, RemoveTeamMember $removeTeamMember)
+    {
+        $team = team();
+        Gate::authorize('removeMembers', $team);
+
+        try {
+            $removeTeamMember->execute($team, $request->user(), $user);
+
+            return redirect()->back()
+                ->with('success', 'Team member removed successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
     public function invite(Request $request, InviteTeamMember $inviteTeamMember)
     {
         $team = team();
-        $this->authorize('inviteMembers', $team);
+        Gate::authorize('inviteMembers', $team);
 
         $availableRoles = array_keys(config('roles.roles'));
 
@@ -99,26 +114,10 @@ class TeamMemberController extends Controller
         }
     }
 
-    public function remove(Request $request, $team, User $user, RemoveTeamMember $removeTeamMember)
-    {
-        $team = team();
-        $this->authorize('removeMembers', $team);
-
-        try {
-            $removeTeamMember->execute($team, $request->user(), $user);
-
-            return redirect()->back()
-                ->with('success', 'Team member removed successfully.');
-        } catch (\Exception $e) {
-            return redirect()->back()
-                ->withErrors(['error' => $e->getMessage()]);
-        }
-    }
-
     public function updateRole(Request $request, $team, $user, UpdateTeamMemberRole $updateTeamMemberRole)
     {
         $team = team();
-        $this->authorize('manageMembers', $team);
+        Gate::authorize('manageMembers', $team);
 
         // Resolve the user if it's an ID
         if (is_numeric($user)) {
@@ -145,7 +144,7 @@ class TeamMemberController extends Controller
     public function removeInvitation(Request $request, $team, TeamInvitation $invitation)
     {
         $team = team();
-        $this->authorize('manageMembers', $team);
+        Gate::authorize('manageMembers', $team);
 
         if (! $invitation) {
             return redirect()->back()
