@@ -8,6 +8,7 @@ use App\Models\TeamInvitation;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class TeamInvitationController extends Controller
@@ -82,5 +83,32 @@ class TeamInvitationController extends Controller
 
         return redirect()->route('login')
             ->with('success', 'Invitation declined.');
+    }
+
+    public function destroy(Request $request, TeamInvitation $invitation)
+    {
+        $team = team();
+        Gate::authorize('manageMembers', $team);
+
+        if (! $invitation) {
+            return redirect()->back()
+                ->withErrors(['error' => 'Invitation not found.']);
+        }
+
+        // Ensure the invitation belongs to this team
+        if ($invitation->team_id !== $team->id) {
+            return redirect()->back()
+                ->withErrors(['error' => 'Invitation not found.']);
+        }
+
+        try {
+            $invitation->delete();
+
+            return redirect()->back()
+                ->with('success', 'Invitation cancelled successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withErrors(['error' => $e->getMessage()]);
+        }
     }
 }

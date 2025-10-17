@@ -291,7 +291,7 @@ export default function TeamMembersSettings({
   const confirmRemoveInvitation = () => {
     if (invitationDeleteDialog.invitationId) {
       deleteInvitation(
-        teams.invitations.remove({
+        teams.invitations.delete({
           team: team.slug,
           invitation: invitationDeleteDialog.invitationId,
         }).url,

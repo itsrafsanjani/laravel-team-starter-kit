@@ -32,19 +32,6 @@ class TeamController extends Controller
             ->with('success', 'Team created successfully.');
     }
 
-    public function switch(Request $request)
-    {
-        $user = $request->user();
-        $team = team();
-
-        if (! $user->belongsToTeam($team)) {
-            abort(403, 'You do not have access to this team.');
-        }
-
-        return redirect()->route('team.dashboard', $team)
-            ->with('success', 'Switched to '.$team->name);
-    }
-
     public function delete(Request $request)
     {
         $team = team();

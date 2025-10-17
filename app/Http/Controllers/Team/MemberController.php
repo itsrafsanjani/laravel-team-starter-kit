@@ -2,13 +2,9 @@
 
 namespace App\Http\Controllers\Team;
 
-use App\Actions\Teams\InviteTeamMember;
 use App\Actions\Teams\RemoveTeamMember;
-use App\Actions\Teams\UpdateTeamMemberRole;
 use App\Http\Controllers\Controller;
-use App\Models\TeamInvitation;
 use App\Models\User;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -85,83 +81,6 @@ class MemberController extends Controller
 
             return redirect()->back()
                 ->with('success', 'Team member removed successfully.');
-        } catch (\Exception $e) {
-            return redirect()->back()
-                ->withErrors(['error' => $e->getMessage()]);
-        }
-    }
-
-    public function invite(Request $request, InviteTeamMember $inviteTeamMember)
-    {
-        $team = team();
-        Gate::authorize('inviteMembers', $team);
-
-        $availableRoles = array_keys(config('roles.roles'));
-
-        $request->validate([
-            'email' => 'required|email|max:255',
-            'role' => 'required|in:'.implode(',', $availableRoles),
-        ]);
-
-        try {
-            $inviteTeamMember->execute($team, $request->user(), $request->email, $request->role);
-
-            return redirect()->back()
-                ->with('success', 'Invitation sent successfully.');
-        } catch (\Exception $e) {
-            return redirect()->back()
-                ->withErrors(['email' => $e->getMessage()]);
-        }
-    }
-
-    public function updateRole(Request $request, $team, $user, UpdateTeamMemberRole $updateTeamMemberRole)
-    {
-        $team = team();
-        Gate::authorize('manageMembers', $team);
-
-        // Resolve the user if it's an ID
-        if (is_numeric($user)) {
-            $user = User::findOrFail($user);
-        }
-
-        $availableRoles = array_keys(config('roles.roles'));
-
-        $request->validate([
-            'role' => 'required|in:'.implode(',', $availableRoles),
-        ]);
-
-        try {
-            $updateTeamMemberRole->execute($team, $request->user(), $user, $request->role);
-
-            return redirect()->back()
-                ->with('success', 'Member role updated successfully.');
-        } catch (\Exception $e) {
-            return redirect()->back()
-                ->withErrors(['error' => $e->getMessage()]);
-        }
-    }
-
-    public function removeInvitation(Request $request, $team, TeamInvitation $invitation)
-    {
-        $team = team();
-        Gate::authorize('manageMembers', $team);
-
-        if (! $invitation) {
-            return redirect()->back()
-                ->withErrors(['error' => 'Invitation not found.']);
-        }
-
-        // Ensure the invitation belongs to this team
-        if ($invitation->team_id !== $team->id) {
-            return redirect()->back()
-                ->withErrors(['error' => 'Invitation not found.']);
-        }
-
-        try {
-            $invitation->delete();
-
-            return redirect()->back()
-                ->with('success', 'Invitation cancelled successfully.');
         } catch (\Exception $e) {
             return redirect()->back()
                 ->withErrors(['error' => $e->getMessage()]);
