@@ -19,10 +19,10 @@ class TeamBillingCheckoutController extends Controller
 
         $validated = $request->validate([
             'plan_id' => ['required', 'integer'],
-            'period'  => ['required', 'in:monthly,yearly,lifetime'],
+            'period' => ['required', 'in:monthly,yearly,lifetime'],
         ]);
 
-        $plan    = Plan::find($validated['plan_id']);
+        $plan = Plan::find($validated['plan_id']);
         $priceId = $plan->getStripePriceIdForCycle($validated['period']);
 
         if (! $priceId) {
@@ -32,19 +32,19 @@ class TeamBillingCheckoutController extends Controller
 
         $subscription = $team->newSubscription('default', $priceId)
             ->withMetadata([
-                'team_id'     => $team->id,
+                'team_id' => $team->id,
                 'environment' => config('app.env'),
-                'site_url'    => url('/'),
-                'plan_id'     => $plan->id,
+                'site_url' => url('/'),
+                'plan_id' => $plan->id,
             ]);
 
         $checkoutOptions = [
             'success_url' => route('team.settings.billing', [$team, 'success' => 'true']),
-            'cancel_url'  => route('team.settings.billing', [$team, 'success' => 'false']),
+            'cancel_url' => route('team.settings.billing', [$team, 'success' => 'false']),
         ];
 
         $checkout = $subscription->checkout($checkoutOptions, [
-            'name'  => $team->name,
+            'name' => $team->name,
             'email' => $team->billing_email,
         ]);
 

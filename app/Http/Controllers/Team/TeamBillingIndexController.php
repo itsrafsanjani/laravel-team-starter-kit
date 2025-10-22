@@ -19,9 +19,9 @@ class TeamBillingIndexController extends Controller
         $activePlan = $team->getActivePlan();
 
         return Inertia::render('Teams/Settings/Billing', [
-            'team'         => $team,
-            'plan'         => $activePlan['plan'],
-            'planCycle'    => $activePlan['cycle'],
+            'team' => $team,
+            'plan' => $activePlan['plan'],
+            'planCycle' => $activePlan['cycle'],
             'subscription' => $activePlan['subscription'],
         ]);
     }
