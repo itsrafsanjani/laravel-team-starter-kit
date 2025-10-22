@@ -20,7 +20,7 @@ class TeamBillingPlansController extends Controller
         $plans = Plan::availableForNewCustomers()->get();
 
         return Inertia::render('Teams/Settings/Billing/Plans', [
-            'team'  => $team,
+            'team' => $team,
             'plans' => $plans,
         ]);
     }
