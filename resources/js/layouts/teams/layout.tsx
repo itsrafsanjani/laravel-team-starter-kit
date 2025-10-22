@@ -25,12 +25,12 @@ export default function TeamSettingsLayout({
   const sidebarNavItems: NavItem[] = [
     {
       title: 'General',
-      href: teamRoutes.settings.general({ team: team.slug }),
+      href: teamRoutes.settings.general.index({ team: team.slug }),
       icon: null,
     },
     {
       title: 'Members',
-      href: teamRoutes.settings.members({ team: team.slug }),
+      href: teamRoutes.settings.members.index({ team: team.slug }),
       icon: null,
     },
     {
